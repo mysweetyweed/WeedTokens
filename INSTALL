@@ -1,0 +1,9 @@
+Building WeedTokens
+
+See doc/readme-qt.rst for instructions on building WeedTokens QT,
+the intended-for-end-users, nice-graphical-interface, reference
+implementation of WeedTokens.
+
+See doc/build-*.txt for instructions on building WeedTokensd,
+the intended-for-services, no-graphical-interface, reference
+implementation of WeedTokens.
