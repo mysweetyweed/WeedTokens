@@ -17,6 +17,14 @@ static CCriticalSection cs_nWalletUnlockTime;
 
 extern void TxToJSON(const CTransaction& tx, const uint256 hashBlock, json_spirit::Object& entry);
 
+static void accountingDeprecationCheck()
+{
+    if (!GetBoolArg("-enableaccounts", false))
+    throw runtime_error(
+    "Accounting API is deprecated and will be removed in future.\n"
+    "It can easily result in negative or odd balances if misused or misunderstood, which has happened in the field.\n"
+    "If you still want to enable it, add to your config file enableaccounts=1\n");
+}
 
 std::string HelpRequiringPassphrase()
 {
@@ -471,6 +479,8 @@ void GetAccountAddresses(string strAccount, set<CTxDestination>& setAddress)
 
 Value getreceivedbyaccount(const Array& params, bool fHelp)
 {
+    accountingDeprecationCheck();
+
     if (fHelp || params.size() < 1 || params.size() > 2)
         throw runtime_error(
             "getreceivedbyaccount <account> [minconf=1]\n"
@@ -584,7 +594,7 @@ Value getbalance(const Array& params, bool fHelp)
         return  ValueFromAmount(nBalance);
     }
 
-    
+    accountingDeprecationCheck();
 
     string strAccount = AccountFromValue(params[0]);
 
@@ -596,6 +606,8 @@ Value getbalance(const Array& params, bool fHelp)
 
 Value movecmd(const Array& params, bool fHelp)
 {
+    accountingDeprecationCheck();
+
     if (fHelp || params.size() < 3 || params.size() > 5)
         throw runtime_error(
             "move <fromaccount> <toaccount> <amount> [minconf=1] [comment]\n"
@@ -967,6 +979,8 @@ Value listreceivedbyaddress(const Array& params, bool fHelp)
 
 Value listreceivedbyaccount(const Array& params, bool fHelp)
 {
+    accountingDeprecationCheck();
+
     if (fHelp || params.size() > 2)
         throw runtime_error(
             "listreceivedbyaccount [minconf=1] [includeempty=false]\n"
@@ -1138,6 +1152,8 @@ Value listtransactions(const Array& params, bool fHelp)
 
 Value listaccounts(const Array& params, bool fHelp)
 {
+    accountingDeprecationCheck();
+
     if (fHelp || params.size() > 1)
         throw runtime_error(
             "listaccounts [minconf=1]\n"
